@@ -1,0 +1,163 @@
+{% extends 'boards/_board.html' %}
+{% block content %}
+<div class="board-body">
+    <h1 class="page-header text-muted">게시판</h1>
+    <div class="btn-justify">
+        <div>
+            <a class="create-btn btn btn-primary btn-sm" href="{% url 'boards:post_create' %}">글쓰기</a>
+            <a class="go-main btn btn-primary btn-sm" href="{% url 'boards:posts' %}">전체보기</a>
+        </div>
+        <div class="pull-right">
+            <select id="select-order" name="order" class="form-select form-select-sm order-list" onchange="location=this.value;">
+                <option id=-created_datetime value="?order=-created_datetime{% if select %}&select={{ select }}&input={{ value }}{% endif %}">최신순</option>
+                <option id=title value="?order=title{% if select %}&select={{ select }}&input={{ value }}{% endif %}">제목순</option>
+                <option id=created_datetime value="?order=created_datetime{% if select %}&select={{ select }}&input={{ value }}{% endif %}">오래된순</option>
+                <option id=favorite value="?order=-favorite_count{% if select %}&select={{ select }}&input={{ value }}{% endif %}">좋아요순</option>
+                <option id=comment value="?order=-comment_count{% if select %}&select={{ select }}&input={{ value }}{% endif %}">댓글순</option>
+            </select>
+        </div>
+    </div>
+    <div class="count">
+        <p>총 {{ count }}개</p>
+    </div>
+    <table class="table table-striped table-hover table-condensed">
+        <thead>
+            <tr>
+                <th class="col-md-1">No</th>
+                <th class="col-md-4">제목</th>
+                <th class="col-md-2">작성자</th>
+                <th class="col-md-3">작성일</th>
+                <th class="col-md-1">조회수</th>
+                <th class="col-md-1">좋아요수</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.pk }}</td>
+                {% if not post.user %}
+                <td><a class="not-user-title" data-bs-target="#passwordModal-{{ forloop.counter }}" data-bs-toggle="modal">{{ post.title }}&nbsp;&nbsp;({{ post.comment_count|default:0 }})</a></td>
+                    <div class="modal fade" id="passwordModal-{{ forloop.counter }}" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">비밀번호 확인</h5>
+                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body btn-group-detail">
+                                    <form method="post" action="{% url 'boards:post_detail' post.pk %}?method=GET">
+                                        {% csrf_token %}
+                                        <span><input class="form-control input-medium" type="password" name="password" value="" placeholder="비밀번호를 입력하세요." /></span>
+                                        <button class="btn btn-primary">확인</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <td class="not-user">비회원</td>
+                {% else %}
+                <td><a href="{% url 'boards:post_detail' post.pk %}">{{ post.title }}&nbsp;&nbsp;({{ post.comment_count|default:0 }})</a></td>
+                <td>{{ post.user.name|default:'알수없음' }}</td>
+                {% endif %}
+                <td>{{ post.created_datetime | date:'Y-m-d' }}</td>
+                <td>{{ post.views }}</td>
+                <td>{{ post.favorite_count|default:0 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="no-posts">작성된 게시글이 없습니다.</td>
+            </tr>
+            <tr>
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <ul class="pagination justify-content-center">
+            {% if previous_flag %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ previous_page_list }}{% if order %}&order={{ order }}{% endif %}
+                {% if select %}&select={{ select }}&input={{ value }}{% endif %}"><<</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" tabindex="-1"><<</a></li>
+            {% endif %}
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if order %}&order={{ order }}{% endif %}
+                    {% if select %}&select={{ select }}&input={{ value }}{% endif %}" aria-disabled="false">이전</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1">이전</a>
+            </li>
+            {% endif %}
+            {% for page in page_range %}
+                {% if page == page_obj.number %}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{ page }}{% if order %}&order={{ order }}{% endif %}
+                        {% if select %}&select={{ select }}&input={{ value }}{% endif %}">{{ page }}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page }}{% if order %}&order={{ order }}{% endif %}
+                        {% if select %}&select={{ select }}&input={{ value }}{% endif %}">{{ page }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if order %}&order={{ order }}{% endif %}
+                    {% if select %}&select={{ select }}&input={{ value }}{% endif %}">다음</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1">다음</a>
+            </li>
+            {% endif %}
+            {% if next_flag %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ next_page_list }}{% if order %}&order={{ order }}{% endif %}
+                    {% if select %}&select={{ select }}&input={{ value }}{% endif %}">>></a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><a class="page-link" tabindex="-1">>></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="search-list">
+        <form method="get" class="form-inline" action="{% url 'boards:posts' %}{{ input_value }}">
+            <div class="search-box form-group">
+                <select name="select" class="select-box form-control">
+                    <option id="search-title" name="title" value="title">제목</option>
+                    <option id="search-user" name="user" value="user">작성자</option>
+                    <option id="search-name" name="content" value="content">내용</option>
+                    <option name="comment" value="comment" hidden>댓글</option>
+                    <option value="title+content" hidden>제목+내용</option>
+                </select>
+            </div>
+            <div class="search-input form-group">
+                <div class="input-group">
+                    <input class="find-input form-control" name="input" type="search" placeholder="검색어를 입력해주세요" value="{{ input_value }}{% if value %}{{ value }}{% endif %}" />
+                    {% if order %}
+                    <input type="hidden" name="order" value="{{ order }}">
+                    {% endif %}
+                    <span class="input-group-btn">
+                        <button type="submit" class="search-btn btn btn-primary">검색</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% if messages %}
+    {% for message in messages %} 
+        {% if message.tags %}
+            <script>
+                alert('{{ message }}');
+            </script>
+        {% endif %} 
+    {% endfor %} 
+{% endif %} 
+{% endblock %}

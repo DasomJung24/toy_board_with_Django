@@ -1,0 +1,55 @@
+{% load static %}
+<html>
+<head>
+    {% block title %}
+    {% endblock %}
+    {% block hearder %}
+    <link rel="icon" type="images/png" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/board.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="{% static 'js/board.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
+    {% endblock %}
+</head>
+<body class="container">
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+<table class="table table-striped table-hover table-condensed">
+<tr>
+    <td>{{ form.username.label_tag }}</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr>
+    <td>{{ form.password.label_tag }}</td>
+    <td>{{ form.password }}</td>
+</tr>
+</table>
+<div>
+    <input class="btn btn-success" type="submit" value="login">
+    <input type="hidden" name="next" value="{{ next }}">
+</div>
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+<p><a href="{% url 'boards:posts' %}">비회원으로 게시판 보기</a></p>
+
+{% endblock %}
+</body>
+</html>

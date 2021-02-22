@@ -1,0 +1,189 @@
+.search-list form {
+  display: flex;
+  justify-content: center;
+}
+.heart {
+  width: 20px;
+  height: 20px;
+}
+.horizon {
+  border-top: 1px solid #eee;
+}
+.style-type-none {
+  list-style-type: none;
+}
+.none-border {
+  border: none;
+}
+.span-font-style {
+  color: #447e9b;
+}
+.span-font-style:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.arrow {
+  width: 10px;
+  height: 10px;
+}
+.child-list {
+  padding-left: 30px;
+}
+.order-list {
+  margin: 2px;
+}
+.no-comment,
+.no-posts {
+  text-align: center;
+}
+.not-user {
+  color: darkgrey;
+}
+.ceil {
+  margin-top: 40px;
+}
+.pull-right {
+  width: 20%;
+}
+.btn-justify {
+  display: flex;
+  justify-content: space-between;
+}
+.board-body {
+  margin-top: 20px;
+}
+.padding-top {
+  padding-top: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 30px;
+}
+.comment-horizon {
+  border-bottom: 1px solid #eee;
+  margin: 20px 0;
+}
+.count {
+  margin-top: 10px;
+}
+.display-none {
+  display: none;
+}
+.font-blue {
+  color: #447e9b;
+}
+.not-user-title {
+  color: #0d6efd;
+  text-underline: #0d6efd;
+}
+.not-user-title:hover {
+  cursor: pointer;
+}
+.comment-btn {
+  float: right;
+}
+#editor ~ .ck .ck-editor__editable {
+  min-height: 400px;
+}
+#editor-comment ~ .ck {
+  width: 100%;
+}
+.comment-pwd,
+.comment-count {
+  margin-bottom: 10px;
+}
+textarea {
+  width: 30%;
+  border: none;
+}
+div.editor-image figure img {
+  width: 250px;
+}
+.btn-group-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+}
+.detail-btn > a,
+.detail-btn > button {
+  margin: 0;
+  margin-right: 3px;
+}
+.submit-btn,
+.confirm-update {
+  margin-right: 3px;
+}
+.delete-confirm {
+  align-items: center;
+}
+.modal-update-btn {
+  display: flex;
+  justify-content: center;
+}
+.password-reply {
+  margin-bottom: 2px;
+}
+.cmt > button {
+  height: 30px;
+}
+.reply-btn-set {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: row;
+}
+.submit-btn-div,
+.delete-submit,
+.submit-update-user,
+.textarea-comment {
+  display: none;
+}
+.label-style {
+  color: black;
+  padding-top: 2px;
+}
+.input-css {
+  border: none;
+  background-color: white;
+}
+.post-line {
+  border-bottom: 1px solid #eee;
+  margin: 20px 0;
+}
+.detail-second-line,
+.comment-second-line {
+  justify-content: space-between;
+  display: flex;
+}
+.detail-input:focus {
+  outline: none;
+}
+.detail-page {
+  padding-bottom: 30px;
+}
+.detail-content-bottom {
+  margin-bottom: 70px;
+}
+.deleted-comment {
+  text-align: left;
+}
+.reply-submit-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 10px;
+}
+.reply-submit-btn-ch {
+  width: 55px;
+}
+.board-nav {
+  padding-top: 10px;
+  background-color: rgba(255, 255, 255, 1);
+}
+.detail-title {
+  font-size: x-large;
+}
+.comment-submit-btn {
+  text-align: right;
+  margin-top: 2px;
+}

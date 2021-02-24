@@ -13,8 +13,8 @@
     {% endblock %}
 </head>
 <body>
-<div class='container'>
-  <div id="div-shape-login"class="width-div height-div">
+<div class='signup-login-page'>
+  <div id="div-shape"class="width-div height-div">
 {% block content %}
 
 {% if form.errors %}
@@ -29,11 +29,12 @@
     <p>Please login to see this page.</p>
     {% endif %}
 {% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
 <div>
     <h2>로그인</h2>
 </div>
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
 <table class="table table-striped table-hover table-condensed main-tb">
 <tr>
     <td>{{ form.username.label_tag }}</td>
@@ -48,15 +49,22 @@
     <input class="btn btn-success" type="submit" value="login">
     <input type="hidden" name="next" value="{{ next }}">
 </div>
-</form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-<!-- <p><a href="{% url 'password_reset' %}">Lost password?</a></p> -->
+<br>
 <p><a href="{% url 'users:signup' %}">회원가입하기</a></p>
 <p><a href="{% url 'boards:posts' %}">비회원으로 게시판 보기</a></p>
+</form>
 
 {% endblock %}
   </div>
 </div>
+{% if messages %}
+    {% for message in messages %} 
+        {% if message.tags %}
+            <script>
+                alert('{{ message }}');
+            </script>
+        {% endif %} 
+    {% endfor %} 
+{% endif %} 
 </body>
 </html>

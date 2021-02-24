@@ -23,7 +23,7 @@ class SignUpView(CreateView):
             data = form.save(commit=False)
             data.name = request.POST.get('name', None)
             data.save()
-            messages.success(request, '가입이 완료되었습니다.')
+            messages.success(request, '회원가입이 완료되었습니다.')
             return redirect('/accounts/login')
         else:
             error_data = {**form.errors.get_json_data()}

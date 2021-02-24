@@ -7,7 +7,7 @@
             <a class="create-btn btn btn-primary btn-sm" href="{% url 'boards:post_create' %}">글쓰기</a>
             <a class="go-main btn btn-primary btn-sm" href="{% url 'boards:posts' %}">전체보기</a>
         </div>
-        <div class="pull-right">
+        <div class="pull-right board-select">
             <select id="select-order" name="order" class="form-select form-select-sm order-list" onchange="location=this.value;">
                 <option id=-created_datetime value="?order=-created_datetime{% if select %}&select={{ select }}&input={{ value }}{% endif %}">최신순</option>
                 <option id=title value="?order=title{% if select %}&select={{ select }}&input={{ value }}{% endif %}">제목순</option>

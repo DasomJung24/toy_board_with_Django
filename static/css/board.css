@@ -195,32 +195,33 @@ div.editor-image figure img {
   margin-left: auto;
   margin-right: auto;
 }
-.height-div {
+/* .height-div {
   height: 45%;
   top: 0;
   bottom: 0;
   margin-top: auto;
   margin-bottom: auto;
-}
-#div-shape-login {
+} */
+/* #div-shape-login {
   position: absolute;
   padding: 20 60 20 60px;
   border: solid 1px lightgrey;
   border-radius: 10px;
   text-align: center;
-}
+} */
 .main-tb {
   margin-top: 20px;
 }
-#div-shape-signup {
-  position: absolute;
+#div-shape {
   border: solid 1px lightgrey;
-  padding: 20 195 20 195px;
   border-radius: 10px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-.height-div-signup {
-  height: 97%;
+.height-div {
   top: 0;
   bottom: 0;
   margin-top: auto;
@@ -233,4 +234,27 @@ div.editor-image figure img {
 .must-input {
   font-size: small;
   color: red;
+}
+.board-select {
+  margin-right: 5px;
+}
+.input-validation {
+  display: none;
+}
+.validation-font {
+  font-size: small;
+  color: lightgray;
+}
+.btn-validation-ok {
+  display: none;
+}
+.signup-login-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.signup-title {
+  margin: 30 0 20 0px;
 }

@@ -1,0 +1,64 @@
+{% load static %}
+<html>
+<head>
+    {% block title %}
+    {% endblock %}
+    {% block hearder %}
+    <link rel="icon" type="images/png" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/board.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="{% static 'js/board.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
+    {% endblock %}
+</head>
+<body>
+<div class='container'>
+    <div id="div-shape-signup"class="width-div height-div-signup">
+        <div>
+            <h2>회원가입</h2>
+        </div>
+        <form method='post' action="{% url 'users:signup' %}">
+            {% csrf_token %}
+            <table class="table table-hover table-condensed">
+                <tr>
+                    <td><p class='signup-input'>사용자 이름<span class="must-input"> (필수)</span><br><input class='signup-input' name='username' value=''></p></td>
+                </tr>
+                <tr>
+                    <td><p class='signup-input'>비밀번호<span class="must-input"> (필수)</span><br><input type="password" class='signup-input' name='password1' value=''></p></td>
+                </tr>
+                <tr>
+                    <td><p class='signup-input'>비밀번호 확인<span class="must-input"> (필수)</span><br><input type="password" class='signup-input' name='password2' value=''></p></td>
+                </tr>
+                <tr>
+                    <td><p class='signup-input'>닉네임<span class="must-input"> (필수)</span><br><input class='signup-input' name='name' value=''></p></td>
+                </tr>
+                <tr>
+                    <td><p class='signup-input'>성<br><input class='signup-input' name='first_name' value=''></p></td>
+                </tr>
+                <tr>
+                    <td><p class='signup-input'>이름<br><input class='signup-input' name='last_name' value=''></p></td>
+                </tr>
+                <tr>
+                    <td><p class='signup-input'>이메일 주소<br><input class='signup-input' name='email' value=''></p></td>
+                </tr>
+            </table>
+            <div>
+                <button class="btn btn-success">가입하기</button>
+            </div>
+        </form>
+    <p><a href="{% url 'login' %}">로그인화면으로 돌아가기</a></p>
+    <p><a href="{% url 'boards:posts' %}">비회원으로 게시판 보기</a></p>
+</div>
+</div>
+{% if messages %}
+    {% for message in messages %} 
+        {% if message.tags %}
+            <script>
+                alert('{{ message }}');
+            </script>
+        {% endif %} 
+    {% endfor %} 
+{% endif %} 
+</body>
+</html>

@@ -30,12 +30,12 @@
 </head>
 <body class="container">
     <ul class="nav nav-tabs board-nav sticky-top">
-      <li class="style-type-none nav-item" >
-        <a class="nav-link {% if request.path == '/accounts/profile/' %}active{% endif %}" href="{% url 'users:login' %}">프로필</a>
-      </li>
+      <div class="left-nav">
       <li class="style-type-none nav-item">
         <a class="nav-link {% if request.path == '/board/posts' %}active{% endif %}" href="{% url 'boards:posts' %}">게시판</a>
       </li>
+      </div>
+      <div class="right-nav">
       {% if request.user.is_authenticated %}
         <li class="style-type-none nav-item">
           <a class="nav-link" href="/accounts/logout">Logout</a>
@@ -45,6 +45,7 @@
           <a class="nav-link" href="/accounts/login">Login</a>
         </li>
       {% endif %}
+      </div>
     </ul>
 {% block content %}
 

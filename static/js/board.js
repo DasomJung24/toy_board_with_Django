@@ -243,9 +243,4 @@ $(document).on('ready page:load', function() {
       $('#search-user').attr('selected', 'selected');
     }
   
-    // 상세페이지에서 목록 클릭했을 때 이전 화면으로 돌아가기
-    $(document).on('click', 'a.back-to-list', function () {
-      window.history.back();
-    })
-  
   });

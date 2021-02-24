@@ -127,3 +127,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = ""
 
 MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = '/board/posts'
+
+LOGOUT_REDIRECT_URL = '/board/posts'

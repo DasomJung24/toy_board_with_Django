@@ -20,6 +20,10 @@ from .models import Post, Favorite, Comment, UploadFile
 from .forms import PostForm, CommentForm, UploadFileForm
 
 
+def index(request):
+    return redirect('/board/posts')
+
+    
 class CustomLoginRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()

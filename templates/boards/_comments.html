@@ -1,0 +1,172 @@
+{% if not comment.parent_id %}
+<div class="comment-horizon ">
+<li class="style-type-none ">
+    <div>
+    {% if not comment.is_delete %}
+    <form>
+        <input type="hidden" name="pk" value="{{ comment.pk }}">
+        <input type="hidden" name="parent_id" value="">
+        <input type="hidden" name="post" value="{{ post.pk }}">
+        <div class="comment-second-line">
+            <div>
+        {% if comment.user %}
+        <span>{{ comment.user.name|default:'알수없음' }}</span>
+        {% else %}
+        <span>비회원</span>
+        {% endif %}
+                </div>
+        <div>
+            {% if request.user == comment.user or request.user.is_superuser %}
+            <span class="update-comment span-font-style">수정</span>
+            <div class="submit-update-user">
+                <span class="submit-update span-font-style">저장</span>
+                <span class="update-cancel-user span-font-style">취소</span>
+            </div>
+            <span class="delete-comment span-font-style" data-url="/board/posts/{{ comment.post.pk }}/comments/delete/{{ comment.pk }}">삭제</span>
+            {% elif not comment.user %}
+            <span class="update-comment-not-user span-font-style">수정</span>
+            <div class="submit-btn-div">
+                <label class="label-style">비밀번호 : <input type="password" name="password1" placeholder="비밀번호를 입력해 주세요." value=""></label>
+                <span class="submit-update span-font-style">저장</span>
+                <span class="cancel-update span-font-style">취소</span>
+            </div>
+            <div class="delete-submit">
+                <label class="label-style">비밀번호 : <input type="password" name="password2" placeholder="비밀번호를 입력해 주세요." value=""></label>
+                <span class="delete-comment span-font-style" data-url="/board/posts/{{ comment.post.pk }}/comments/delete/{{ comment.pk }}">삭제</span>
+                <span class="cancel-delete span-font-style">취소</span>
+            </div>
+            <span class="delete-comment-not-user span-font-style">삭제</span>
+            {% endif %}
+            </div>
+        </div>
+        <p>{{ comment.created_datetime }}</p>
+        <div class="editor-image">
+            <div class="ck ck-editor ck-content ck-editor__editable_inline post-line"><strong>{{ comment.content|safe }}</strong></div>
+            <div class="textarea-comment"><textarea readonly class="editor-comment textarea-{{ comment.pk }}" name="content">{{ comment.content|safe }}</textarea></div>
+        </div>
+    </form>
+    <form class="first-comment" method="post" action="{% url 'boards:comment_create' post.pk %}">
+    <input type="button" class="btn btn-secondary reply-btn" value="답글">
+    <div class="display-none comment-{{ comment.pk }}">
+        {% csrf_token %}
+        <br>
+        {% if comment.user.is_authenticated %}
+        <p>@{{ comment.user.name|default:'알수없음' }}</p>
+        {% else %}
+        <p>@비회원</p>
+        {% endif %}
+        {% if not request.user.is_authenticated %}
+        <label>비밀번호 : <input class="password-reply" type="password" placeholder="비밀번호를 입력해주세요." name="password" value=""></label><br>
+        {% endif %}
+        <div>
+            <div>
+                <textarea class="editor-reply" name="content"></textarea>
+            </div>
+            <input type="hidden" name="user" value="{% if request.user.is_authenticated %}{{ request.user.id }}{% endif %}">
+            <input type="hidden" name="post" value="{{ post.pk }}">
+            <input type="hidden" name="parent_id" value="{{ comment.pk }}">
+            <div class="comment-submit-btn">
+                <button class="btn btn-secondary reply-submit-btn-ch">작성</button>
+            </div>
+        </div>
+    </div>
+    </form>
+    {% else %}
+        <p class="deleted-comment">삭제된 댓글입니다.</p>
+    {% endif %}
+    </div>
+</li>
+</div>
+{% else %}
+<div class="comment-horizon">
+    <img class="arrow" src="/static/images/next.svg">
+    <li class="child-list style-type-none">
+        <div>
+        {% if not comment.is_delete %}
+        <form>
+            <input type="hidden" name="pk" value="{{ comment.pk }}">
+            <input type="hidden" name="parent_id" value="{{ comment.parent_id }}">
+            <input type="hidden" name="post" value="{{ post.pk }}">
+            {% if comment.parent.user %}
+            <span class="font-blue">@{{ comment.parent.user.name|default:'알수없음' }}</span><br>
+            {% else %}
+            <span class="font-blue">@비회원</span><br>
+            {% endif %}
+            <div class="comment-second-line">
+            <div>
+            {% if comment.user %}
+            <span>{{ comment.user.name|default:'알수없음' }}</span>
+            {% else %}
+            <span>비회원</span>
+            {% endif %}
+            </div>
+            <div>
+                {% if request.user == comment.user or request.user.is_superuser %}
+                <span class="update-comment span-font-style">수정</span>
+                <div class="submit-update-user">
+                    <span class="submit-update span-font-style">저장</span>
+                    <span class="update-cancel-user span-font-style">취소</span>
+                </div>
+                <span class="delete-comment span-font-style" data-url="/board/posts/{{ comment.post.pk }}/comments/delete/{{ comment.pk }}">삭제</span>
+                {% elif not comment.user %}
+                <span class="update-comment-not-user span-font-style">수정</span>
+                <div class="submit-btn-div">
+                    <label class="label-style">비밀번호 : <input type="password" name="password1" placeholder="비밀번호를 입력해 주세요." value=""></label>
+                    <span class="submit-update span-font-style">저장</span>
+                    <span class="cancel-update span-font-style">취소</span>
+                </div>
+                <div class="delete-submit">
+                    <label class="label-style">비밀번호 : <input type="password" name="password2" placeholder="비밀번호를 입력해 주세요." value=""></label>
+                    <span class="delete-comment span-font-style" data-url="/board/posts/{{ comment.post.pk }}/comments/delete/{{ comment.pk }}">삭제</span>
+                    <span class="cancel-delete span-font-style">취소</span>
+                </div>
+                <span class="delete-comment-not-user span-font-style">삭제</span>
+                {% endif %}
+                </div>
+            </div>
+            <p>{{ comment.created_datetime }}</p>
+            <div class="editor-image">
+                <div class="ck ck-editor ck-content ck-editor__editable_inline post-line"><strong>{{ comment.content|safe }}</strong></div>
+                <div class="textarea-comment"><textarea readonly class="editor-comment textarea-{{ comment.pk }}" name="content">{{ comment.content|safe }}</textarea></div>
+            </div>
+        </form>
+        <form method="post" action="{% url 'boards:comment_create' post.pk %}">
+            <input type="button" class="btn btn-secondary reply-btn" value="답글">
+            <div class="display-none comment-{{ comment.pk }}">
+                {% csrf_token %}
+                <br>
+                {% if comment.user.is_authenticated %}
+                <p>@{{ comment.user.name|default:'알수없음' }}</p>
+                {% else %}
+                <p>@비회원</p>
+                {% endif %}
+                {% if not request.user.is_authenticated %}
+                <label>비밀번호 : <input class="password-reply" type="password" placeholder="비밀번호를 입력해주세요." name="password" value=""></label><br>
+                {% endif %}
+                <div>
+                    <div>
+                        <textarea class="editor-reply" name="content"></textarea>
+                    </div>
+                    <input type="hidden" name="user" value="{% if request.user.is_authenticated %}{{ request.user.id }}{% endif %}">
+                    <input type="hidden" name="post" value="{{ post.pk }}">
+                    <input type="hidden" name="parent_id" value="{{ comment.pk }}">
+                    <div class="comment-submit-btn">
+                        <p><button class="btn btn-secondary reply-submit-btn-ch">작성</button></p>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <p class="deleted-comment">삭제된 댓글입니다.</p>
+        {% endif %}
+        </div>
+    </li>
+</div>
+{% endif %}
+<div id="comments-id">
+{% for node in comment.comments.all %}
+    {% include 'boards/_comments.html' with comment=node %}
+{% endfor %}
+</div>
+
+

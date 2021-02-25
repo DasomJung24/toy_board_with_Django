@@ -1,0 +1,159 @@
+{% extends 'boards/_board.html' %}
+{% block content %}
+{% load static %}
+    <div class="container ceil">
+        <div class="detail-page">
+        <div class="form-group">
+            <div class="page-header post-line detail-second-line">
+                <p><input readonly class="readonly-change input-css detail-input detail-title" type="text" name="title" value="{{ post.title }}" /></p>
+                <input type="hidden" name="id" value="{{ post.pk }}" />
+                <div class="">
+                    <p class="datetime"><input readonly class="input-css detail-input" type="text" name="created_datetime" value="{{ post.created_datetime|date:'Y-m-d H:i:s' }}" /></p>
+                </div>
+            </div>
+            <div class="post-line">
+                <div>
+                    <p>
+                        작성자 :
+                        {% if not post.user %}
+                        <input readonly class="input-css detail-input" type="text" value="비회원" />
+                        {% else %}
+                        <input readonly class="input-css detail-input" type="text" name="user_name" value="{{ post.user.name|default:'알수없음' }}" />
+                        {% endif %}
+                    </p>
+                    <input type="hidden" name="user" value="{{ post.user.id|default:'' }}" />
+                </div>
+                    <div class="" >
+                        <p>조회수 : <input readonly class="input-css detail-input" type="text" name="views" value="{{ post.views }}" /></p>
+                    </div>
+                <div class="detail-second-line ">
+                    <div class="">
+                        <p>좋아요수 : <input readonly class="input-css fav-count detail-input" type="text" name="favorite_count" value="{{ favorite_count }}" /></p>
+                    </div>
+                     <form>
+                    <div>
+                        <input type="hidden" name="id" value="{{ post.pk }}">
+                        {% if post.user != request.user and request.user.is_authenticated %}
+                            {% if favorite %}
+                            <img class="heart heart-btn" src="/static/images/heart.svg" />
+                            {% else %}
+                            <img class="heart heart-btn" src="/static/images/favourite-heart.png" />
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </form>
+                </div>
+                </div>
+            <div class="detail-content-bottom">
+                <div class="ck ck-editor ck-content ck-editor__editable_inline post-line">{{ post.content|safe }}</div>
+            </div>
+        </div>
+        <div class="btn-group-detail detail-btn">
+            {% if request.user == post.user or request.user.is_superuser %}
+                <a href="{% url 'boards:post_update' post.pk %}" class="btn btn-primary">수정</a>
+            <button type="button" class="btn btn-primary" data-bs-target="#confirmDelete" data-bs-toggle="modal">삭제</button>
+            <div class="modal fade" id="confirmDelete" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content delete-confirm">
+                        <div class="modal-body">
+                            <form method="post" action="{% url 'boards:post_delete' post.pk %}?method=DELETE">
+                                {% csrf_token %}
+                                <p>정말 삭제하시겠습니까?</p>
+                                <input type="hidden" name="post_id" value="{{ post.pk }}" />
+                                <button class="btn btn-primary">확인</button>
+                                <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elif not post.user %} 
+            <button type="button" class="btn btn-primary" data-bs-target="#passwordModal" data-bs-toggle="modal">수정</button>
+            <div class="modal fade" id="passwordModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">비밀번호 확인</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="{% url 'boards:post_detail' post.pk %}?method=UPDATE">
+                                {% csrf_token %}
+                                <p><input class="form-control input-medium" type="password" name="password" value="" placeholder="비밀번호를 입력하세요." /></p>
+                                <div class="modal-update-btn">
+                                    <button class="btn btn-primary">확인</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" data-bs-target="#passwordModal2" data-bs-toggle="modal">삭제</button>
+            <div class="modal fade" id="passwordModal2" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">비밀번호 확인</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="{% url 'boards:post_delete' post.pk %}?method=DELETE">
+                                {% csrf_token %}
+                                <p><input class="form-control input-medium" type="password" name="password" value="" placeholder="비밀번호를 입력하세요." /></p>
+                                <div class="modal-update-btn">
+                                    <button class="btn btn-primary">확인</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <a href="{% url 'boards:posts' %}"class="btn btn-primary">목록</a>
+        </div>
+        </div>
+        <div class="horizon">
+            <form method="post" action="{% url 'boards:comment_create' post.pk %}">
+                {% csrf_token %}
+                <div class="padding-top">
+                    {% if not request.user.is_authenticated %}
+                    <label class="comment-pwd">비밀번호 : <input type="password" name="password" placeholder="비밀번호를 입력하세요." value=""></label>
+                    {% endif %}
+                    <div class="comment-btn-set">
+                        <div>
+                            <textarea id="editor-comment" name="content"></textarea>
+                            <input type="hidden" name="post" value="{{ post.pk }}" />
+                            <input type="hidden" name="user" value="{% if request.user.is_authenticated %}{{ request.user.id }}{% endif %}" />
+                            <input type="hidden" name="parent_id" value="" />
+                        </div>
+                        <div class="comment-submit-btn">
+                            <span class=""> <button class="btn btn-secondary">작성</button></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <ul class="cmt-list style-type-none">
+                {% for comment in comment_list %}
+                    {% include 'boards/_comments.html' with comment=comment %}
+                {% empty %}
+                <li class="style-type-none">
+                    <p class="no-comment">댓글이 없습니다.</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <script>
+                    alert('{{ message }}');
+                </script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </div>
+<script src="{% static 'js/comment_editor.js' %}"></script>
+{% endblock %}
+</body>

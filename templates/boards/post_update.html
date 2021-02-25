@@ -1,0 +1,58 @@
+{% extends 'boards/_board.html' %}
+{% block content %}
+{% load static %}
+    <div class="container ceil">
+        <div class="detail-page">
+        <form method="post" action="{% url 'boards:post_update' post.pk %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="page-header post-line detail-second-line">
+                    <p>제목 : <input type="text" name="title" value="{{ post.title }}" /></p>
+                    <input type="hidden" name="id" value="{{ post.pk }}" />
+                </div>
+                <div>
+                    <div class="detail-second-line post-line">
+                        <div class="col-md-6">
+                            <p>작성자 :
+                                {% if not post.user %}
+                                <input readonly class="input-css detail-input" type="text" value="비회원" />
+                                {% else %}
+                                <input readonly class="input-css detail-input" type="text" name="user_name" value="{{ post.user.name|default:'알수없음' }}" />
+                                {% endif %}
+                            </p>
+                            <input type="hidden" name="user" value="{{ post.user.id|default:'' }}" />
+                            <input type="hidden" name="password" value="{{ request.password|default:'' }}" />
+                        </div>
+                        <div>
+                            <p class="datetime">
+                                <input readonly class="input-css detail-input" type="text" name="created_datetime" value="{{ post.created_datetime|date:'Y-m-d H:i:s' }}" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <textarea id="editor" name="content">{{ post.content }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group-detail">
+                <button type="submit" class="confirm-update btn btn-primary">확인</button>
+                <a href="{% url 'boards:post_detail' post.pk %}" class="btn btn-primary">취소</a>
+            </div>
+             </form>
+        </div>
+        <div class="horizon"></div>
+    </div>
+{% if messages %}
+    {% for message in messages %} 
+        {% if message.tags %}
+            <script>
+                alert('{{ message }}');
+            </script>
+        {% endif %} 
+    {% endfor %} 
+{% endif %}
+<script src="{% static 'js/editor.js' %}"></script>
+{% endblock %}

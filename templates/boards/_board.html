@@ -1,0 +1,54 @@
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    {% block title %}
+    <title>title</title>
+    {% endblock %}
+
+    {% block header %}
+    <link rel="icon" type="images/png" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/board.css' %}">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+        crossorigin="anonymous"
+    />
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js"></script>
+    <script src="{% static 'js/board.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
+    {% endblock %}
+</head>
+<body class="container">
+    <ul class="nav nav-tabs board-nav sticky-top">
+      <div class="left-nav">
+      <li class="style-type-none nav-item">
+        <a class="nav-link {% if request.path == '/board/posts' %}active{% endif %}" href="{% url 'boards:posts' %}">게시판</a>
+      </li>
+      </div>
+      <div class="right-nav">
+      {% if request.user.is_authenticated %}
+        <li class="style-type-none nav-item">
+          <a class="nav-link" href="/accounts/logout">Logout</a>
+        </li>
+      {% else %}
+        <li class="style-type-none nav-item">
+          <a class="nav-link" href="/accounts/login">Login</a>
+        </li>
+      {% endif %}
+      </div>
+    </ul>
+{% block content %}
+
+{% endblock %}
+</body>
+</html>

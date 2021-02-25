@@ -1,0 +1,74 @@
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    {% block title %}
+    <title>title</title>
+    {% endblock %}
+
+    {% block header %}
+    <link rel="icon" type="images/png" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/board.css' %}">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+        crossorigin="anonymous"
+    />
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/25.0.0/classic/ckeditor.js"></script>
+    <script src="{% static 'js/board.js' %}"></script>
+    <script src="{% static 'js/common.js' %}"></script>
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="text-muted">게시글 작성</h1>
+        </div>
+        <div >
+            <form id="create-form" method="post" action="{% url 'boards:post_create' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control" type="hidden" name="posting-id" value="{{ post.pk }}">
+                    <div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                {% if request.user.is_authenticated %}
+                                <p>작성자 : <input readonly class="form-control" type="text" name="user_name" value="{{ request.user.name }}"></p>
+                                <input type="hidden" name="user" value="{{ request.user.id }}">
+                                {% else %}
+                                <p>작성자 : <input readonly class="form-control" type="text" name="user_name" value="비회원"></p>
+                                <input type="hidden" name="user" value="">
+                                <p>비밀번호 : <input class="form-control" type="password" name="password" value=""></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                            <p>제목 : <input class="form-control" type="text" name="title" value=""></p>
+                    </div>
+                    <div><textarea id="editor" name="content"></textarea></div>
+                    </div>
+                <div class="btn-group-detail">
+                    <button type="button" class="submit-btn btn btn-primary">저장</button>
+                    <a href="{% url 'boards:posts' %}" class="btn btn-primary">취소</a>
+                </div>
+            </form>
+        </div>
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags %}
+            <script>
+                alert('{{ message }}');
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<script src="{% static 'js/editor.js' %}"></script>
+</div>
+</body>

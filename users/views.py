@@ -33,7 +33,7 @@ class SignUpView(CreateView):
                     error_message[i] = j['message']
 
             messages.error(request, error_message)
-            return redirect('/user/create')
+            return render(request, 'registration/signup.html', {'data': request.POST})
 
     def get(self, request, *args, **kwargs):
         return render(request, 'registration/signup.html')

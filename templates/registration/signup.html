@@ -23,32 +23,32 @@
             </div>
             <table class="table table-hover table-condensed">
                 <tr>
-                    <td><p class='signup-input'>사용자 이름<span class="must-input"> (필수)</span><br><input class='signup-input' name='username' value=''></p></td>
+                    <td><p class='signup-input'>사용자 이름<span class="must-input"> (필수)</span><br><input class='signup-input' name='username' value='{% if data.username %}{{ data.username }}{% endif %}'></p></td>
                     <div class="input-validation"><span></span></div>
                 </tr>
                 <tr>
                     <td><p class='signup-input'>비밀번호<span class="must-input"> (필수)</span><br>
-                        <input type="password" class='signup-input password-input' name='password1' value=''></p>
+                        <input type="password" class='signup-input password-input' name='password1' value='{% if data.password1 %}{{ data.password1 }}{% endif %}'></p>
                         <div class="input-validation"><span class="must-input">8자 이상 영문자 숫자 조합으로 입력해주세요.</span></div>
                     </td>
                 </tr>
                 <tr>
                     <td><p class='signup-input'>비밀번호 확인<span class="must-input"> (필수)</span><br>
-                        <input type="password" class='signup-input password-confirm' name='password2' value=''></p>
+                        <input type="password" class='signup-input password-confirm' name='password2' value='{% if data.password2 %}{{ data.password2 }}{% endif %}'></p>
                         <div class="input-validation"><span class="must-input">비밀번호가 일치하지 않습니다.</span></div>
                     </td>
                 </tr>
                 <tr>
-                    <td><p class='signup-input'>닉네임<span class="must-input"> (필수)</span><br><input class='signup-input' name='name' value=''></p></td>
+                    <td><p class='signup-input'>닉네임<span class="must-input"> (필수)</span><br><input class='signup-input' name='name' value='{% if data.name %}{{ data.name }}{% endif %}'></p></td>
                 </tr>
                 <tr>
-                    <td><p class='signup-input'>성<br><input class='signup-input' name='first_name' value=''></p></td>
+                    <td><p class='signup-input'>성<br><input class='signup-input' name='first_name' value='{% if data.first_name %}{{ data.first_name }}{% endif %}'></p></td>
                 </tr>
                 <tr>
-                    <td><p class='signup-input'>이름<br><input class='signup-input' name='last_name' value=''></p></td>
+                    <td><p class='signup-input'>이름<br><input class='signup-input' name='last_name' value='{% if data.last_name %}{{ data.last_name }}{% endif %}'></p></td>
                 </tr>
                 <tr>
-                    <td><p class='signup-input'>이메일 주소<br><input class='signup-input' name='email' value=''></p></td>
+                    <td><p class='signup-input'>이메일 주소<br><input class='signup-input' name='email' value='{% if data.email %}{{ data.email }}{% endif %}'></p></td>
                 </tr>
             </table>
             <div class="btn-validation-ok">

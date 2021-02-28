@@ -17,3 +17,9 @@ class SignUpForm(UserCreationForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
+
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+        if User.objects.filter(name=name):
+            raise forms.ValidationError("Name already exists")
+        return name
